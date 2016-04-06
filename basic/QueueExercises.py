@@ -21,7 +21,19 @@ def HotPotato():
         
     print q.dequeue()
             
+
+def PalindromChecker(text):
+    q = MyDS.DeQueue()
     
+    for c in text: q.addRear(c)
+
+    while q.size() > q.size()%2:
+        if q.removeFront() != q.removeRear():  return False
+    return True
+
+        
 
 if __name__ == '__main__':
     HotPotato()
+    
+    print PalindromChecker('abcbb')

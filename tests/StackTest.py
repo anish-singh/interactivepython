@@ -4,7 +4,7 @@ Created on Apr 4, 2016
 @author: anishsingh1
 '''
 import unittest
-from interactivepython.basic.MyStack import Stack
+from basic.MyDS import Stack
 
 
 class Test(unittest.TestCase):
