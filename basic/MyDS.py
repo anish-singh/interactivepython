@@ -90,27 +90,6 @@ class Node:
         self.next = n
         
 
-class UnOrderedList:
-    
-    def __init__(self):
-        self.head = None
-        self.tail = None
-        
-    def add(self, item):
-        # add to front
-        n = Node(item)
-        if self.head is None:
-            self.head = n
-            self.tail = n
-        else:
-            n.setNext(self.head)
-            self.head = n
-        
-            
-
-    def isEmpty(self):
-        return self.head == None
-    
     def size(self):
         count = 0
         n = self.head
@@ -118,6 +97,39 @@ class UnOrderedList:
             count += 1
             n = n.getNext()
         return count
+    
+    def isEmpty(self):
+        return self.head == None
+    
+class List:
+    
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        
+    def size(self):
+        count = 0
+        n = self.head
+        while n != None:
+            count += 1
+            n = n.getNext()
+        return count
+    
+    def isEmpty(self):
+        return self.head == None
+
+
+    def index(self, item):
+        pass
+    
+    def pop(self):
+        pass
+    
+    def append(self, item):
+        pass
+    
+    def search(self, item):
+        pass
     
     def remove(self, item):
         n = self.head
@@ -137,7 +149,34 @@ class UnOrderedList:
                 prev = n
                 n = n.getNext()
     
-                
+    def add(self, item):
+        pass
+    
+    def print_list(self):
+        n = self.head
+        while n != None:
+            print n.getData()
+            n = n.getNext()
+        
+    
+
+class UnOrderedList (List):
+    
+    def __init__(self):
+        List.__init__(self)
+        
+        
+    def add(self, item):
+        # add to front
+        n = Node(item)
+        if self.head is None:
+            self.head = n
+            self.tail = n
+        else:
+            n.setNext(self.head)
+            self.head = n
+        
+       
     def search(self, item):
         n = self.head
         while n != None:
@@ -155,22 +194,51 @@ class UnOrderedList:
             self.tail = n
         else:
             self.tail.setNext(n)
-#        n = self.head
+
+  
+
+
+class OrderedList(List):
+    def __init__(self):
+        List.__init__(self)
         
-#        while n.getNext() != None: 
-#            n = n.getNext()
+    def add(self, item):
+        prev = None
+        curr = self.head
         
-#        n.setNext(Node(item))
-     
-    def index(self, item):
-        pass
+        if self.head is None: 
+            self.head = self.tail = Node(item)
+        
+        else:
+            while curr != None:
+                if curr.getData() > item :
+                    n = Node(item)
+                    if prev == None:
+                        n.setNext(curr)
+                        self.head = n
+                    else:
+                        n.setNext(curr)
+                        prev.setNext(n)
+                    break
+                else:
+                    prev = curr
+                    curr = curr.getNext()
+            else:
+                n = Node(item)
+                prev.setNext(n)
+                
+                
     
-    def pop(self):
-        pass
-    
-    #def pop(self, pos):
-    #    pass   
-    
+    def search(self, item):
+        n = self.head
+        while n != None:
+            if(n.getData() < item): n=n.getNext()
+            elif n.getData() == item: return True
+            else: return False
+        return False
+            
+        
+
     
 def main():
     pass
