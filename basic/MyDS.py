@@ -3,7 +3,6 @@ Created on Apr 4, 2016
 
 @author: anishsingh1
 '''
-from pip._vendor.requests.api import head
 
 class Stack:
     
