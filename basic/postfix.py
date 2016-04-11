@@ -67,6 +67,8 @@ def doMath(op1, op2, operation):
     if(operation == '-'): return int(op2) - int(op1) 
     if(operation == '^'): return int(op2)**int(op1)         
 
+
+
 def getTokens(s):
     
     count = 0
