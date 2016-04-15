@@ -5,60 +5,48 @@ Created on Apr 13, 2016
 '''
 
 class Node:
-    '''
-    classdocs
-    '''
-
-
+    
     def __init__(self, data):
         self.data = data
         self.edges = {}
         
-    def addEdge(self, e, weight = 0):
-        self.edges[e] = weight
-        
-    def getEdges(self):
-        return self.edges.keys()
+    def addEdge(self, toNode, weight):
+        self.edges[toNode] = weight
     
-    def getData(self):
-        return self.data
+    def getNeighbors(self):
+        return self.edges.values()    
     
-    def getWeight(self, toNode):
-        return self.edges[toNode]
-    
-    
-        
+
 class Graph:
     
     def __init__(self):
-        self.numNodes = 0
         self.nodes = {}
+        self.size = 0
         
-    def addNode(self, key):
-        n = Node(key)
-        self.numNodes += 1
-        self.nodes[key] = n
+    def addNode(self, nodeData):
+        n = Node(nodeData)
+        self[nodeData] = n
+        self.size += 1
         return n
+    
+    def addEdge(self, fromNode, toNode, weight=0):
+        if not self.nodes[fromNode]:
+            self.addNode(fromNode)
         
-    def __contains__(self, n):
-        return n in self.nodes
-    
-    def getNodes(self):
-        return self.nodes.keys()
-           
-    
-    def addEdge(self, toKey, frmKey, weight):
-        if toKey not in self.nodes.keys():
-            self.addNode(toKey)
-        if frmKey not in self.nodes.keys():
-            self.addNode(frmKey)
-        self.nodes[frmKey].addEdge(self.nodes[toKey], weight)
+        if not self.nodes[toNode]:
+            self.addNode(toNode)
+            
+        self.nodes[fromNode].addEdge(toNode, weight)
         
     def __iter__(self):
         return iter(self.nodes.values())
+    
+    
+    def getNode(self, nodeData):
+        return self.nodes[nodeData]
+    
+    def getNodes(self):
+        return self.nodes.values()
+    
+    
             
-  
-    
-        
-    
-        
