@@ -23,7 +23,6 @@ def buildGraph(fileName):
                     buckets[bucketName].append(word)
       
     # build graph
-    
     g = Graph()
     
     for bucket in buckets.values():
@@ -37,8 +36,8 @@ def buildGraph(fileName):
     return g
     
     
-def bfs(g, key):
-    start = g.getNode(key)
+def bfs(g, start):
+    
     q = Queue()
     q.enqueue(start)
     while q.size() > 0:
@@ -51,14 +50,14 @@ def bfs(g, key):
                 i.distance = n.distance +1
                 q.enqueue(i)
         n.status = 'VISITED'
-    pass
     
     
-def getLadder(filename, start, end):
-   
+def getLadder(filename, startWord, endWord):
+ 
     g = buildGraph(filename)
+    start = g.getNode(startWord)
     bfs(g, start)
-    e = g.getNode(end)   
+    e = g.getNode(endWord)   
     while e:
         print e.getData()
         e = e.pred   
