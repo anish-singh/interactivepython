@@ -13,64 +13,99 @@ def solve(puz):
     
     p = solveByCrossHatching(puz)
     done = is_solved(p)
-    #done = False
     
     if not done:
+        done = solveByPickingOneOfTwoValues(p)
         
-        #done = solve_recursive(puz)
-        p2 = getGridWithPossibleValuesInEachCell(p)
+    if not done:
+        done = solve_recursive(p,0)
         
-        curr_count = 2
-        
-        while curr_count < 3 and not done:
-            r, c = 0,0
-            while r < 9 and not done:
-                while c < 9 and not done:
-                    if len(p2[r][c]) == curr_count:
-                        for v in p2[r][c]:
-                            p_temp = copy.deepcopy(p)
-                            p_temp[r][c] = [v]
-                            p_s = solveByCrossHatching(p_temp)
-                            done = is_solved(p_s)
-                            if done: 
-                                break
-                    c += 1
-                r += 1
-            curr_count += 1
-
     if not done:
         print 'cannot solve the puzzle'
+            
+            
                     
-
-
-def solve_recursive(puz):
-    curr_count = 2
-    done = False
+def solveByPickingOneOfTwoValues(p):
+    
+    p2 = getGridWithPossibleValuesInEachCell(p)
+       
+    done = False 
     r, c = 0,0
     while r < 9 and not done:
         while c < 9 and not done:
-            p = getGridWithPossibleValuesInEachCell(puz)
-            if len(p[r][c]) == curr_count:
-                for v in p[r][c]:
-                    p_temp = copy.deepcopy(puz)
+            if len(p2[r][c]) == 2:
+                for v in p2[r][c]:
+                    p_temp = copy.deepcopy(p)
                     p_temp[r][c] = [v]
                     p_s = solveByCrossHatching(p_temp)
                     done = is_solved(p_s)
-                    if not done:
-                        done = solve_recursive(p_temp)
                     if done: 
                         break
+            c += 1
+        r += 1
     return done
+
+
+def solve_recursive(puz, rec_count):
     
+#    if rec_count > 10: return False
+    
+    p = getGridWithPossibleValuesInEachCell(puz)
+    
+    # find cell with 2 possible values
+    found = False
+    r,c = 0,0
+    for r in range(9):
+        for c in range(9):
+            if len(p[r][c]) == 2:  
+                found = True
+                break
+        if found:
+            break
+        
+    
+      
+    done = False
+    if found:
+        for v in p[r][c]:
+            if not done:
+                print "Using Cell rec_num= %d r=%d, c=%d cell_vals=%s v=%s" %(rec_count,r,c,p[r][c],v) 
+                p_temp = copy.deepcopy(puz)
+                p_temp[r][c] = [v]
+                p_s = solveByCrossHatching(p_temp)
+                done = is_solved(p_s)
+                if not done:
+                    #print "before recursion:"
+                    #printPuzzle(p_temp)
+                    done = solve_recursive(p_s, rec_count+1)
+        
+    return done
+
+        
+    
+    
+    # pick one cell with 2 possible values
+    # for each possible value
+    # create another grid with that value assigned to that cell
+    # solve the puzzle with cross hatching
+    # if not solved then do the same with next value of that cell
+    # if still not solved.  pick one value for that cell
+    # create another grid with that value assigned to that cell
+    # call solve_recursive(new grid)
+    # return solved or not
+
     
     
 
 def solveByCrossHatching(puz):
     
     done = False
+    #print "Input puzzle:"
+    #printPuzzle(puz)
     
     while not done:
-        new_puz = [ [ '' for i in range(9) ] for j in range(9) ]
+        #new_puz = [ [ '' for i in range(9) ] for j in range(9) ]
+        new_puz = copy.deepcopy(puz)
         
         grid_with_values = getGridWithPossibleValuesInEachCell(puz)
         
@@ -78,16 +113,19 @@ def solveByCrossHatching(puz):
             for c in range(9):
                 if len(grid_with_values[r][c]) == 1:
                     new_puz[r][c]= grid_with_values[r][c]
-                else:
-                    new_puz[r][c]= puz[r][c]
+                    grid_with_values = getGridWithPossibleValuesInEachCell(new_puz)
+                #else:
+                #    new_puz[r][c]= puz[r][c]
 
         if isSame(puz, new_puz): 
             done = True
         else: 
             puz = new_puz
+            #printPuzzle(puz)    
+
             
-        printPuzzle(puz)
-        
+    #print "Output puzzle:"
+    printPuzzle(puz)    
     return puz
 
 
