@@ -11,7 +11,7 @@ import copy
 def solve(puz):  
     
     p = solveByCrossHatching(puz)
-    done = is_solved(p)
+    done = isSolved(p)
 
     if not done:
         done = solve_recursive(p,0)
@@ -50,12 +50,12 @@ def solve_recursive(puz, rec_count):
         p_temp1 = copy.deepcopy(puz)        
         p_temp1[r][c] = [v1]
         ps1 = solveByCrossHatching(p_temp1)
-        if is_solved(ps1): return True
+        if isSolved(ps1): return True
         
         p_temp2 = copy.deepcopy(puz)        
         p_temp2[r][c] = [v2]
         ps2 = solveByCrossHatching(p_temp2)
-        if is_solved(ps2): return True
+        if isSolved(ps2): return True
         
         n1 = getNumOfUnSolvedCells(ps1)
         n2 = getNumOfUnSolvedCells(ps2)
@@ -114,9 +114,9 @@ def getGridWithPossibleValuesForEachCell(p):
 
     new_grid = copy.deepcopy(p)
         
-    allRowNums = initNumbersInAllRows(p)
-    allColNums = initNumbersInAllCols(p)
-    allGridNums = initNumbersInAllGrid(p)      
+    allRowNums = getNumbersInAllRows(p)
+    allColNums = getNumbersInAllCols(p)
+    allGridNums = getNumbersInAllGrids(p)      
     for r in range(9):
         for c in range(9):
             if p[r][c][0]=='' :
@@ -137,7 +137,7 @@ def getAvailableValuesForCell(p,rowNums, colNums, gridNums):
     return values
 
 
-def initNumbersInAllGrid(p):
+def getNumbersInAllGrids(p):
     gridNums = []
     for r in range(9):
         gridNums.append([])
@@ -146,14 +146,14 @@ def initNumbersInAllGrid(p):
     return gridNums
         
 
-def initNumbersInAllRows(p):
+def getNumbersInAllRows(p):
     rowNums = []
     for r in range(9):
         l = getNumbersInRow(p,r)
         rowNums.append(l)
     return rowNums
 
-def initNumbersInAllCols(p):
+def getNumbersInAllCols(p):
     colNums = []
     for c in range(9):
         l = getNumbersInCol(p,c)
@@ -191,7 +191,7 @@ def isSame(p1, p2):
             if p1[i][j] != p2[i][j]: return False
     return True
             
-def is_solved(p):
+def isSolved(p):
     for i in range(9):
         for j in range(9):
             if p[i][j][0] == '': return False
